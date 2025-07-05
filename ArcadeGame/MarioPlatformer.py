@@ -30,19 +30,6 @@ class Platformer(arcade.Window):
         
         self.coin_sound = arcade.load_sound("res/sounds/coin_sound.ogg") # Атрибут для хранения звука взятия монеты
     
-    def on_draw(self) -> None:
-        if len(self.coins_list) == 0: # Проверяем список спрайтов монет на наличие элементов
-            self.clear()
-            win_text = arcade.Text("WIN", 300, 300, arcade.csscolor.GOLD, 150) # Инициализируем атрибут хранящий надпись о победе игрока 
-            win_text.draw() # Отображаем надпись о победе игрока
-
-        else: # В случае наличия спрайтов в списке coins_list продолжаем отрисовку сцены и счета
-            self.clear() # Очищаем экран приложения
-            self.scene.draw() # Производим отрисовку сцены
-            
-            text = arcade.Text(f"Score: {self.score}", 15, 600, arcade.csscolor.GOLD, 25) # Инициализируем атрибут хранящий данные о счете игрока
-            text.draw() # Отображаем текущий счет игрока
-
     def setup(self) -> None:
         self.tilemap = arcade.load_tilemap("res/maps/map.tmx", self.TILE_SCALING, {
             "ground": {"use_spatial_hash": True},
@@ -63,7 +50,22 @@ class Platformer(arcade.Window):
         self.ground_list = self.tilemap.sprite_lists["ground"] # Присваиваем слой ground атрибуту ground_list
         self.coins_list = self.tilemap.sprite_lists["coins"] # Присваиваем слой coins атрибуту coins_list
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, walls=self.ground_list, gravity_constant=self.GRAVITY) # Присваиваем атрибуту physics_engine объект физического движка
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, walls=self.ground_list, gravity_constant=self.GRAVITY) # Присваиваем атрибуту physics_engine объект физического движка 
+    
+    def on_draw(self) -> None:
+        if len(self.coins_list) == 0: # Проверяем список спрайтов монет на наличие элементов
+            self.clear()
+            win_text = arcade.Text("WIN", 300, 300, arcade.csscolor.GOLD, 150) # Инициализируем атрибут хранящий надпись о победе игрока 
+            win_text.draw() # Отображаем надпись о победе игрока
+
+        else: # В случае наличия спрайтов в списке coins_list продолжаем отрисовку сцены и счета
+            self.clear() # Очищаем экран приложения
+            self.scene.draw() # Производим отрисовку сцены
+            
+            text = arcade.Text(f"Score: {self.score}", 15, 600, arcade.csscolor.GOLD, 25) # Инициализируем атрибут хранящий данные о счете игрока
+            text.draw() # Отображаем текущий счет игрока
+
+    
 
     def on_update(self, delta_time) -> None:
         self.physics_engine.update() # Запускаем цикл работы физического движка
